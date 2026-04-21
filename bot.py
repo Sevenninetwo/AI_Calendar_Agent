@@ -49,16 +49,26 @@ def get_calendar_service():
     token_path = os.path.join(os.path.dirname(__file__), "token.json")
     creds_path = os.path.join(os.path.dirname(__file__), "credentials.json")
     creds = None
-    if os.path.exists(token_path):
+
+    token_json_env = os.getenv("GOOGLE_TOKEN_JSON")
+    if token_json_env:
+        creds = Credentials.from_authorized_user_info(json.loads(token_json_env), SCOPES)
+    elif os.path.exists(token_path):
         creds = Credentials.from_authorized_user_file(token_path, SCOPES)
+
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file(creds_path, SCOPES)
+            creds_json_env = os.getenv("GOOGLE_CREDENTIALS_JSON")
+            if creds_json_env:
+                flow = InstalledAppFlow.from_client_config(json.loads(creds_json_env), SCOPES)
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(creds_path, SCOPES)
             creds = flow.run_local_server(port=0)
-        with open(token_path, "w") as f:
-            f.write(creds.to_json())
+        if not token_json_env:
+            with open(token_path, "w") as f:
+                f.write(creds.to_json())
     return build("calendar", "v3", credentials=creds)
 
 
