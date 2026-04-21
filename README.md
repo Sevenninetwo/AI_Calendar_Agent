@@ -45,7 +45,7 @@ You (Telegram) → bot.py → Claude API (intent classification) → Google Cale
 - Python 3.13
 - Claude API (Anthropic) — intent classification and response formatting
 - Google Calendar API — calendar read/write
-- python-telegram-bot — Telegram interface
+- Telegram-bot — Telegram interface (perfect playground for developers and hobbyists)
 - Railway — cloud hosting
 - pytz — timezone handling
 
