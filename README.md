@@ -1,13 +1,13 @@
 # AI Calendar Agent
 
-An autonomous AI agent that manages Google Calendar through natural language via Telegram. No GUI, no clicks — just conversation.
+An autonomous AI agent that manages Google Calendar through natural language via Telegram. No GUI (graphical user interface), no clicks — just conversation! 
 
 ## What It Does
 
 Message the bot in plain English and it handles the rest:
 
 - "What's on today?" → summarises your day
-- "Am I free tomorrow afternoon?" → checks availability
+- "Am I free tomorrow afternoon?" → checks availability 
 - "Add a meeting with the team on Friday at 3pm" → creates the event and asks for confirmation
 - "Delete my 2pm tomorrow" → finds it and confirms before deleting
 - "Move my Monday standup to 4pm" → edits the event with a confirmation gate
