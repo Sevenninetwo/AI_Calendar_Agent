@@ -68,9 +68,13 @@ RUN_FUNCTIONAL=true python eval.py
 
 ## What I'd Do Differently
 
-Replace the Claude API call for intent classification with a lightweight local classifier. The current architecture sends every message to the LLM just to determine intent — that adds 1-2 seconds of latency and unnecessary API cost for simple commands like "/today". A simple keyword-based router in Python handles 80% of cases instantly, reserving Claude for genuine ambiguity. This would cut response time by half and reduce cost by roughly 40%.
+The bot works, but two things bit me during deployment that I'd design out from the start next time.
 
-I'd also implement a proper refresh token flow for Google OAuth from day one rather than treating it as a deployment afterthought. On a cloud server with no browser, re-authentication becomes a manual intervention — a background token refresh loop eliminates that entirely.
+1. The first is response speed. Right now the bot asks Claude to figure out what you mean before doing anything, even for something as simple as "what's on today?" That adds unnecessary wait time for commands that don't actually need AI to interpret. I'd build a simple fast-path that handles obvious requests instantly, and only bring Claude in when the message is genuinely ambiguous. Faster for the user, cheaper to run.
+
+2. The second is the Google authentication setup. I didn't think through what happens when the bot runs on a cloud server with no browser — and I paid for it with two manual re-authentication incidents mid-build. I'd design the credential refresh to happen automatically in the background from day one, so it never becomes a user-facing problem.
+
+Both are solvable. I just didn't anticipate them until I hit them in production.
 
 ## Time taken
 
