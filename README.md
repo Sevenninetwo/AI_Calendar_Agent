@@ -49,6 +49,23 @@ You (Telegram) → bot.py → Claude API (intent classification) → Google Cale
 - Railway — cloud hosting
 - pytz — timezone handling
 
+## Evals
+
+The repo includes an automated eval suite (`eval.py`) covering two layers:
+
+**LLM Quality Evals** — 14 test cases that verify Claude correctly classifies intent, resolves dates like "tomorrow" and "next Friday", extracts event titles and times, and handles edge cases like unknown intents.
+
+**Functional Evals** — live integration tests against Google Calendar that verify event creation, retrieval, the 11pm boundary fix, and deletion. Runs only when `RUN_FUNCTIONAL=true` is set to avoid touching your real calendar unintentionally.
+
+Results are exported to `eval_results.csv` after every run for quality tracking over time.
+
+To run:
+```bash
+python eval.py
+# or with functional tests:
+RUN_FUNCTIONAL=true python eval.py
+```
+
 ## What I'd Do Differently
 
 Replace the Claude API call for intent classification with a lightweight local classifier. The current architecture sends every message to the LLM just to determine intent — that adds 1-2 seconds of latency and unnecessary API cost for simple commands like "/today". A simple keyword-based router in Python handles 80% of cases instantly, reserving Claude for genuine ambiguity. This would cut response time by half and reduce cost by roughly 40%.
