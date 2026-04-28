@@ -51,11 +51,11 @@ You (Telegram) → bot.py → Claude API (intent classification) → Google Cale
 
 ## Evals
 
-The repo includes an automated eval suite (`eval.py`) covering two layers:
+The repo includes an automated eval suite (see `eval.py`) covering two layers:
 
-**LLM Quality Evals** — 14 test cases that verify Claude correctly classifies intent, resolves dates like "tomorrow" and "next Friday", extracts event titles and times, and handles edge cases like unknown intents.
+1) **LLM Quality Evals** — 14 test cases that verify Claude correctly classifies intent, resolves dates like "tomorrow" and "next Friday", extracts event titles and times, and handles edge cases like unknown intents.
 
-**Functional Evals** — live integration tests against Google Calendar that verify event creation, retrieval, the 11pm boundary fix, and deletion. Runs only when `RUN_FUNCTIONAL=true` is set to avoid touching your real calendar unintentionally.
+2) **Functional Evals** — live integration tests against Google Calendar that verify event creation, retrieval, the 11pm to 11:59pm boundary fix, and deletion. Runs only when `RUN_FUNCTIONAL=true` is set to avoid touching your real calendar unintentionally, as a precautionary measure. 
 
 Results are exported to `eval_results.csv` after every run for quality tracking over time.
 
