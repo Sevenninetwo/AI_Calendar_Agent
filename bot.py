@@ -284,14 +284,20 @@ def _to_sgt_str(start: dict) -> str:
     """Return a human-readable SGT time string from a Calendar event start dict."""
     dt_str = start.get("dateTime")
     if not dt_str:
-        return start.get("date", "")
+        # All-day event: compute day name explicitly in SGT to avoid system-timezone errors
+        date_str = start.get("date", "")
+        if date_str:
+            date_obj = SGT.localize(datetime.strptime(date_str, "%Y-%m-%d"))
+            return date_obj.strftime("%A %Y-%m-%d")
+        return date_str
     # Strip fractional seconds (Python 3.9 fromisoformat doesn't handle them)
     dt_str = re.sub(r'\.\d+', '', dt_str)
     dt_str = dt_str.replace("Z", "+00:00")
     dt = datetime.fromisoformat(dt_str)
     if dt.tzinfo is None:
         dt = pytz.utc.localize(dt)
-    return dt.astimezone(SGT).strftime("%Y-%m-%d %H:%M")
+    local = dt.astimezone(SGT)
+    return local.strftime("%A %Y-%m-%d %H:%M")
 
 
 def format_events(events: list, period: str) -> str:
