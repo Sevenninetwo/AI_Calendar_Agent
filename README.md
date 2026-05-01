@@ -70,9 +70,9 @@ RUN_FUNCTIONAL=true python eval.py
 
 The bot works, but two things bit me during deployment that I'd design out from the start next time.
 
-1. The first is response ##speed##. Right now the bot asks Claude to figure out what you mean before doing anything — even for something as simple as "what's on today?" That adds unnecessary wait time for commands that don't actually need AI to interpret. I'd build a simple fast-path that handles obvious requests instantly, and only bring Claude in when the message is genuinely ambiguous. Faster for the user, cheaper to run.
+1. The first is *response speed*. Right now the bot asks Claude to figure out what you mean before doing anything — even for something as simple as "what's on today?" That adds unnecessary wait time for commands that don't actually need AI to interpret. I'd build a simple fast-path that handles obvious requests instantly, and only bring Claude in when the message is genuinely ambiguous. Faster for the user, cheaper to run.
 
-2. The second is ##reliability infrastructure##. I didn't think through what happens when the bot runs on a cloud server with no browser — and I paid for it with multiple manual re-authentication incidents mid-build. A production-grade version would handle this from day one: proactive token refresh running as a background job, a health check endpoint, and an uptime monitor pinging the service every few minutes so I know about failures before my users do.
+2. The second is *reliability infrastructure*. I didn't think through what happens when the bot runs on a cloud server with no browser — and I paid for it with multiple manual re-authentication incidents mid-build. A production-grade version would handle this from day one: proactive token refresh running as a background job, a health check endpoint, and an uptime monitor pinging the service every few minutes so I know about failures before my users do.
 
 Both are solvable. I just didn't anticipate them until I hit them in production.
 
